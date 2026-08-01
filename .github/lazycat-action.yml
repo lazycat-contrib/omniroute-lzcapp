@@ -1,0 +1,43 @@
+version: 1
+
+project:
+  root: .
+  build_config: lzc-build.yml
+  package_file: package.yml
+  output: .lazycat-build/omniroute.lpk
+  target_arch: amd64
+
+update:
+  strategy: publish
+  allow_downgrade: false
+  version_source:
+    type: image
+    image: omniroute
+
+build:
+  toolchains: []
+  run_buildscript: false
+
+images:
+  - id: omniroute
+    target: service
+    service: omniroute
+    source: docker.io/diegosouzapw/omniroute
+    channel: stable
+    tag_regex: '^[0-9]+\.[0-9]+\.[0-9]+$'
+    delivery:
+      mode: mirror
+      image_template: docker.1ms.run/diegosouzapw/omniroute:{tag}
+      require_digest_match: true
+
+stores:
+  official:
+    enabled: false
+    skip_if_version_exists: false
+    retry:
+      enabled: false
+  private:
+    enabled: true
+    skip_if_version_exists: true
+    name: OmniRoute
+    summary: 统一 AI 代理，提供控制台、OpenAI 兼容 API、MCP 与 A2A 能力

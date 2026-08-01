@@ -1,0 +1,52 @@
+params:
+  - id: initial_password
+    type: secret
+    name: "Initial Admin Password"
+    description: "Initial password for the OmniRoute dashboard administrator; it can be changed later in Settings"
+    default_value: "$random(len=20)"
+    optional: false
+
+  - id: omniroute_memory_mb
+    type: string
+    name: "Node.js Memory Limit"
+    description: "Maximum Node.js heap size in MiB (recommended range: 256-1536; default: 512)"
+    default_value: "512"
+    optional: false
+
+  - id: require_api_key
+    type: bool
+    name: "Require API Key"
+    description: "Require a valid OmniRoute API key for requests to OpenAI-compatible /v1 endpoints"
+    default_value: "false"
+    optional: false
+
+  - id: allow_private_provider_urls
+    type: bool
+    name: "Allow Private Provider URLs"
+    description: "Allow self-hosted providers on private or local network addresses; enable only for trusted networks"
+    default_value: "false"
+    optional: false
+
+  - id: custom_domain
+    type: string
+    name: "Custom Domain"
+    description: "Optional public domain without the URL scheme (for example: omniroute.example.com); leave empty to use the LazyCat application domain"
+    optional: true
+
+locales:
+  zh:
+    initial_password:
+      name: "初始管理员密码"
+      description: "OmniRoute 控制台管理员的初始密码，可在设置中修改"
+    omniroute_memory_mb:
+      name: "Node.js 内存上限"
+      description: "Node.js 堆内存上限，单位 MiB（建议 256-1536，默认 512）"
+    require_api_key:
+      name: "强制 API Key"
+      description: "访问 OpenAI 兼容的 /v1 接口时必须提供有效的 OmniRoute API Key"
+    allow_private_provider_urls:
+      name: "允许私有网络 Provider"
+      description: "允许连接私有或本地网络中的自托管 Provider，仅应在可信网络中启用"
+    custom_domain:
+      name: "自定义域名"
+      description: "可选的公开访问域名，不包含 http:// 或 https://；留空时使用懒猫应用域名"

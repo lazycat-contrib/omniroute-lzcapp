@@ -1,0 +1,74 @@
+application:
+  subdomain: omniroute
+  public_path:
+    - /
+  upstreams:
+    - location: /
+      backend: http://omniroute:20128/
+      disable_trim_location: true
+  health_check:
+    test_url: http://omniroute:20128/api/monitoring/health
+    start_period: 120s
+    timeout: 10s
+
+services:
+  redis:
+    image: registry.lazycat.cloud/czyt/library/redis:845a06fb1ef3dc9c
+    command: redis-server --save 60 1 --loglevel warning
+    binds:
+      - /lzcapp/var/redis:/data
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - ping
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    cpu_shares: 256
+    mem_limit: 256M
+
+  omniroute:
+    # upstream: docker.io/diegosouzapw/omniroute:3.8.49
+    image: docker.1ms.run/diegosouzapw/omniroute:3.8.49
+    environment:
+      - NODE_ENV=production
+      - PORT=20128
+      - HOSTNAME=0.0.0.0
+      - API_HOST=0.0.0.0
+      - DATA_DIR=/app/data
+      - BASE_URL=http://omniroute:20128
+      - NEXT_PUBLIC_BASE_URL={{if .U.custom_domain}}https://{{.U.custom_domain}}{{else}}https://${LAZYCAT_APP_DOMAIN}{{end}}
+      - NEXT_PUBLIC_APP_URL={{if .U.custom_domain}}https://{{.U.custom_domain}}{{else}}https://${LAZYCAT_APP_DOMAIN}{{end}}
+      - OMNIROUTE_BASE_URL=http://omniroute:20128
+      - APP_LOG_TO_FILE=true
+      - APP_LOG_FILE_PATH=/app/data/logs/application/app.log
+      - AUTH_COOKIE_SECURE=true
+      - INITIAL_PASSWORD={{ .U.initial_password }}
+      - JWT_SECRET={{ stable_secret "omniroute_jwt_secret_v1" }}
+      - API_KEY_SECRET={{ stable_secret "omniroute_api_key_secret_v1" }}
+      - STORAGE_ENCRYPTION_KEY={{ stable_secret "omniroute_storage_encryption_key_v1" }}
+      - OMNIROUTE_WS_BRIDGE_SECRET={{ stable_secret "omniroute_ws_bridge_secret_v1" }}
+      - OMNIROUTE_MEMORY_MB={{ .U.omniroute_memory_mb }}
+      - REQUIRE_API_KEY={{ .U.require_api_key }}
+      - OMNIROUTE_ALLOW_PRIVATE_PROVIDER_URLS={{ .U.allow_private_provider_urls }}
+      - REDIS_URL=redis://redis:6379
+      - TZ=Asia/Shanghai
+    depends_on:
+      - redis
+    binds:
+      - /lzcapp/var/data:/app/data
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - healthcheck.mjs
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+    cpu_shares: 1024
+    mem_limit: 2G
+
+usage: |
+  使用安装向导中设置的初始管理员密码登录控制台。OpenAI 兼容接口位于 /v1；如启用了“强制 API Key”，请先在控制台创建 API Key。Redis 仅供应用内部使用。

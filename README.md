@@ -20,6 +20,7 @@ OmniRoute 提供统一的 AI Provider 路由、控制台、OpenAI 兼容 API、M
 - 是否为 `/v1` 接口强制启用 API Key
 - 是否允许访问私有网络中的自托管 Provider
 - 可选自定义公开域名；留空时使用懒猫应用域名
+- 时区，默认 `Asia/Shanghai`
 
 内部 JWT、API Key 加密、数据库加密和 WebSocket bridge 密钥由 LazyCat 的 `stable_secret` 自动生成。按项目要求，本包不注入免密登录，也不注入 LazyCat 文件选择器拦截脚本。
 

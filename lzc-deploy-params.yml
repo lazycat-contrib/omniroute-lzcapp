@@ -33,6 +33,13 @@ params:
     description: "Optional public domain without the URL scheme (for example: omniroute.example.com); leave empty to use the LazyCat application domain"
     optional: true
 
+  - id: timezone
+    type: string
+    name: "Timezone"
+    description: "IANA timezone used by OmniRoute and its logs (for example: Asia/Shanghai)"
+    default_value: "Asia/Shanghai"
+    optional: false
+
 locales:
   zh:
     initial_password:
@@ -50,3 +57,6 @@ locales:
     custom_domain:
       name: "自定义域名"
       description: "可选的公开访问域名，不包含 http:// 或 https://；留空时使用懒猫应用域名"
+    timezone:
+      name: "时区"
+      description: "OmniRoute 及其日志使用的 IANA 时区（例如 Asia/Shanghai）"

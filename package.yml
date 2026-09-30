@@ -1,5 +1,5 @@
 package: community.lazycat.app.omniroute
-version: 3.8.50
+version: 3.8.51
 name: OmniRoute
 description: "统一 AI 代理，提供控制台、OpenAI 兼容 API、MCP 与 A2A 能力"
 min_os_version: 1.5.0

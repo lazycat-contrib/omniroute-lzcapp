@@ -27,8 +27,8 @@ services:
     cpu_shares: 256
     mem_limit: 256M
   omniroute:
-    # upstream: docker.io/diegosouzapw/omniroute:3.8.50
-    image: docker.1ms.run/diegosouzapw/omniroute:3.8.50
+    # upstream: docker.io/diegosouzapw/omniroute:3.8.51
+    image: docker.1ms.run/diegosouzapw/omniroute:3.8.51
     environment:
       - NODE_ENV=production
       - PORT=20128
